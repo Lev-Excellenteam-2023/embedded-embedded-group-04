@@ -2,6 +2,10 @@
 .idea/
 *.iml
 
+
+venv/
+env/
+
 # User-specific stuff
 *.pyc
 *.pyo
