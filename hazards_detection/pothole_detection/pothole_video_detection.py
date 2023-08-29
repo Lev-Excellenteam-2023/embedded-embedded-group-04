@@ -6,19 +6,20 @@ import cv2 as cv
 import geocoder
 
 HAZARD_TYPE = "Pothole"
-RESULT_PATH = "pothole_coordinates"
+RESULT_PATH = "/Users/yehudanevo/PycharmProjects/embedded-embedded-group-04/hazards_detection/pothole_coordinates"
+PROJ_FILE_PATH = "/Users/yehudanevo/PycharmProjects/embedded-embedded-group-04/hazards_detection/pothole_detection/project_files"
 
 
 def analyze_potholes_video(video_path: str):
     results = []
     # reading label name from obj.names file
     class_name = []
-    with open(os.path.join("project_files", 'obj.names'), 'r') as f:
+    with open(os.path.join(PROJ_FILE_PATH, 'obj.names'), 'r') as f:
         class_name = [cname.strip() for cname in f.readlines()]
 
     # importing model weights and config file
     # defining the model parameters
-    net1 = cv.dnn.readNet('project_files/yolov4_tiny.weights', 'project_files/yolov4_tiny.cfg')
+    net1 = cv.dnn.readNet( PROJ_FILE_PATH + '/yolov4_tiny.weights', PROJ_FILE_PATH + '/yolov4_tiny.cfg')
     net1.setPreferableBackend(cv.dnn.DNN_BACKEND_CUDA)
     net1.setPreferableTarget(cv.dnn.DNN_TARGET_CUDA_FP16)
     model1 = cv.dnn_DetectionModel(net1)

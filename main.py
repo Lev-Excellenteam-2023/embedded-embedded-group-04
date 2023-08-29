@@ -1,16 +1,10 @@
 from typing import List, Tuple
-
 from hazards_detection.pothole_detection.pothole_video_detection import analyze_potholes_video
-from map_generator import generate_map
+from map.map_generation import generate_map
 
 
 def camera() -> str:
-    """
-
-    :return:
-    """
-    return r"C:\Networks\pothole-detection\stock-footage-vehicle-tyre-driving-over-a-" \
-           r"damaged-highway-which-is-covered-in-po_m7l7AT5Q.webm"
+    return "clip.webm"
 
 
 def hazard_detector(video_path: str) -> List[Tuple[Tuple[float, float], str]]:
@@ -24,19 +18,10 @@ def hazard_detector(video_path: str) -> List[Tuple[Tuple[float, float], str]]:
 def main():
     video_path = camera()
     analyzed_result = hazard_detector(video_path)
-    # hazard_type = 'pothole'
-    icon_path = 'icon.png'
-    hazards_data = []
-    print(len(hazards_data))
 
-    for image_path, coordinates, hazard_type in analyzed_result:
-        latitude = coordinates[0]
-        longitude = coordinates[1]
-        hazards_data.append((latitude, longitude, hazard_type, icon_path))
 
-    generated_map = generate_map(hazards_data)
+    generated_map = generate_map(analyzed_result)
     generated_map.save("hazards_map.html")
-    # print_map(analyzed_result)
 
 
 if __name__ == "__main__":
