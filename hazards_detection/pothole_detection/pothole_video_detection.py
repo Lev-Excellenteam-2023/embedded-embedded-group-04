@@ -1,24 +1,26 @@
 # importing necessary libraries
 import os
 import time
-
+from geolocation.gps_mock import LocationMock
 import cv2 as cv
 import geocoder
 
 HAZARD_TYPE = "Pothole"
-RESULT_PATH = "pothole_coordinates"
+RESULT_PATH = "/Users/yehudanevo/PycharmProjects/embedded-embedded-group-04/hazards_detection/pothole_coordinates"
+PROJ_FILE_PATH = "/Users/yehudanevo/PycharmProjects/embedded-embedded-group-04/hazards_detection/pothole_detection/project_files"
 
 
 def analyze_potholes_video(video_path: str):
+    gps_mock = LocationMock()
     results = []
     # reading label name from obj.names file
     class_name = []
-    with open(os.path.join("project_files", 'obj.names'), 'r') as f:
+    with open(os.path.join(PROJ_FILE_PATH, 'obj.names'), 'r') as f:
         class_name = [cname.strip() for cname in f.readlines()]
 
     # importing model weights and config file
     # defining the model parameters
-    net1 = cv.dnn.readNet('project_files/yolov4_tiny.weights', 'project_files/yolov4_tiny.cfg')
+    net1 = cv.dnn.readNet( PROJ_FILE_PATH + '/yolov4_tiny.weights', PROJ_FILE_PATH + '/yolov4_tiny.cfg')
     net1.setPreferableBackend(cv.dnn.DNN_BACKEND_CUDA)
     net1.setPreferableTarget(cv.dnn.DNN_TARGET_CUDA_FP16)
     model1 = cv.dnn_DetectionModel(net1)
@@ -65,7 +67,9 @@ def analyze_potholes_video(video_path: str):
                     if (i == 0):
                         photo_path = os.path.join(RESULT_PATH, HAZARD_TYPE + str(i) + '.jpg')
                         cv.imwrite(photo_path, frame)
-                        coordinates = g.latlng
+                        # coordinates = g.latlng
+                        coordinates = gps_mock.location_mock()
+
                         results.append((photo_path, coordinates, HAZARD_TYPE))
                         coordinates = str(g.latlng)
                         with open(os.path.join(RESULT_PATH, HAZARD_TYPE + str(i) + '.txt'), 'w') as f:
@@ -75,7 +79,8 @@ def analyze_potholes_video(video_path: str):
                         if ((time.time() - b) >= 2):
                             photo_path = os.path.join(RESULT_PATH, HAZARD_TYPE + str(i) + '.jpg')
                             cv.imwrite(photo_path, frame)
-                            coordinates = g.latlng
+                            # coordinates = g.latlng
+                            coordinates = gps_mock.location_mock()
                             results.append((photo_path, coordinates, HAZARD_TYPE))
                             coordinates = str(g.latlng)
                             with open(os.path.join(RESULT_PATH, HAZARD_TYPE + str(i) + '.txt'), 'w') as f:
