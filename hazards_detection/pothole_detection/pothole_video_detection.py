@@ -1,7 +1,7 @@
 # importing necessary libraries
 import os
 import time
-
+from geolocation.gps_mock import LocationMock
 import cv2 as cv
 import geocoder
 
@@ -11,6 +11,7 @@ PROJ_FILE_PATH = "/Users/yehudanevo/PycharmProjects/embedded-embedded-group-04/h
 
 
 def analyze_potholes_video(video_path: str):
+    gps_mock = LocationMock()
     results = []
     # reading label name from obj.names file
     class_name = []
@@ -66,7 +67,9 @@ def analyze_potholes_video(video_path: str):
                     if (i == 0):
                         photo_path = os.path.join(RESULT_PATH, HAZARD_TYPE + str(i) + '.jpg')
                         cv.imwrite(photo_path, frame)
-                        coordinates = g.latlng
+                        # coordinates = g.latlng
+                        coordinates = gps_mock.location_mock()
+
                         results.append((photo_path, coordinates, HAZARD_TYPE))
                         coordinates = str(g.latlng)
                         with open(os.path.join(RESULT_PATH, HAZARD_TYPE + str(i) + '.txt'), 'w') as f:
@@ -76,7 +79,8 @@ def analyze_potholes_video(video_path: str):
                         if ((time.time() - b) >= 2):
                             photo_path = os.path.join(RESULT_PATH, HAZARD_TYPE + str(i) + '.jpg')
                             cv.imwrite(photo_path, frame)
-                            coordinates = g.latlng
+                            # coordinates = g.latlng
+                            coordinates = gps_mock.location_mock()
                             results.append((photo_path, coordinates, HAZARD_TYPE))
                             coordinates = str(g.latlng)
                             with open(os.path.join(RESULT_PATH, HAZARD_TYPE + str(i) + '.txt'), 'w') as f:

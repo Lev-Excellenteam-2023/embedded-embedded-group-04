@@ -4,14 +4,10 @@ from map.map_generation import generate_map
 
 
 def camera() -> str:
-    return "clip.webm"
+    return "private/clip.webm"
 
 
 def hazard_detector(video_path: str) -> List[Tuple[Tuple[float, float], str]]:
-    """
-    :param video_path:
-    :return:list of coordinates and the photo path for this coordinate image
-    """
     return analyze_potholes_video(video_path)
 
 
