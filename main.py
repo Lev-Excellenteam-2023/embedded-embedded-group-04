@@ -1,10 +1,12 @@
 from typing import List, Tuple
+from utils.consts import VIDEO_PATH
 from hazards_detection.pothole_detection.pothole_video_detection import analyze_potholes_video
-from map.map_generation import generate_map
 
 
-def camera() -> str:
-    return "private/clip.webm"
+
+
+def print_welcome_message():
+    print("Hello! Welcome to the Pothole Detection Application")
 
 
 def hazard_detector(video_path: str) -> List[Tuple[Tuple[float, float], str]]:
@@ -12,12 +14,24 @@ def hazard_detector(video_path: str) -> List[Tuple[Tuple[float, float], str]]:
 
 
 def main():
-    video_path = camera()
-    analyzed_result = hazard_detector(video_path)
+    print_welcome_message()
 
+    while True:
+        print("\nOptions:")
+        print("1. Detect Potholes with Video")
+        print("2. Detect Potholes with Live Camera")
+        print("3. Quit")
+        analyzed_result = []
+        choice = input("Enter your choice: ")
 
-    generated_map = generate_map(analyzed_result)
-    generated_map.save("hazards_map.html")
+        if choice == '1':
+            analyzed_result = hazard_detector(VIDEO_PATH)
+        elif choice == '2':
+            analyzed_result = hazard_detector()
+        elif choice == '3':
+            break
+        else:
+            print("Invalid choice. Please select a valid option.")
 
 
 if __name__ == "__main__":
