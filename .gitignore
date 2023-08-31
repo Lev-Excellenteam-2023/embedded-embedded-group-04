@@ -44,6 +44,10 @@ wheels/
 .installed.cfg
 *.egg
 
+utils
+hazards_map.html
+result.avi
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt

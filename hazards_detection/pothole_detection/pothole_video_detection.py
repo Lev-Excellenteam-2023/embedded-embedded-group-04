@@ -1,4 +1,3 @@
-import msvcrt
 import os
 import time
 
@@ -46,10 +45,6 @@ def analyze_potholes_video(video_path: str = 0):
     # print("press q to stop:\n")
     # detection loop
     while True:
-        if msvcrt.kbhit():
-            key = msvcrt.getch()
-            if key == 'q':
-                break
         ret, frame = cap.read()
         frame_counter += 1
         if ret is False:
