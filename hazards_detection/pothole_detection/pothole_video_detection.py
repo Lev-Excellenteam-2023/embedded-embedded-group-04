@@ -102,6 +102,7 @@ def analyze_potholes_video(video_path: str):
     cap.release()
     result.release()
     cv.destroyAllWindows()
+
     return results
 
 
