@@ -2,6 +2,9 @@
 .idea/
 *.iml
 
+# SQLite
+*.db
+
 private/
 venv/
 env/
@@ -40,6 +43,10 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+
+hazards_map.html
+result.avi
 
 # Installer logs
 pip-log.txt
@@ -99,3 +106,4 @@ ipython_config.py
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
 __pyp
+/utils/
