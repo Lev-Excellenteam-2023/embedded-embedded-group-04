@@ -5,6 +5,10 @@
 private/
 venv/
 env/
+utils/consts.py
+
+#DB
+*.db
 
 # User-specific stuff
 *.pyc
