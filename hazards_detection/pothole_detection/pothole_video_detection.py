@@ -1,16 +1,15 @@
-# importing necessary libraries
+import msvcrt
 import os
 import time
-from geolocation.gps_mock import LocationMock
+
 import cv2 as cv
 import geocoder
 
-HAZARD_TYPE = "Pothole"
-RESULT_PATH = "/Users/yehudanevo/PycharmProjects/embedded-embedded-group-04/hazards_detection/pothole_coordinates"
-PROJ_FILE_PATH = "/Users/yehudanevo/PycharmProjects/embedded-embedded-group-04/hazards_detection/pothole_detection/project_files"
+from geolocation.gps_mock import LocationMock
+from utils.consts import HAZARD_TYPE, RESULT_PATH, PROJ_FILE_PATH
 
 
-def analyze_potholes_video(video_path: str):
+def analyze_potholes_video(video_path: str = 0):
     gps_mock = LocationMock()
     results = []
     # reading label name from obj.names file
@@ -20,7 +19,7 @@ def analyze_potholes_video(video_path: str):
 
     # importing model weights and config file
     # defining the model parameters
-    net1 = cv.dnn.readNet( PROJ_FILE_PATH + '/yolov4_tiny.weights', PROJ_FILE_PATH + '/yolov4_tiny.cfg')
+    net1 = cv.dnn.readNet(PROJ_FILE_PATH + '/yolov4_tiny.weights', PROJ_FILE_PATH + '/yolov4_tiny.cfg')
     net1.setPreferableBackend(cv.dnn.DNN_BACKEND_CUDA)
     net1.setPreferableTarget(cv.dnn.DNN_TARGET_CUDA_FP16)
     model1 = cv.dnn_DetectionModel(net1)
@@ -44,9 +43,13 @@ def analyze_potholes_video(video_path: str):
     frame_counter = 0
     i = 0
     b = 0
-
+    # print("press q to stop:\n")
     # detection loop
     while True:
+        if msvcrt.kbhit():
+            key = msvcrt.getch()
+            if key == 'q':
+                break
         ret, frame = cap.read()
         frame_counter += 1
         if ret is False:

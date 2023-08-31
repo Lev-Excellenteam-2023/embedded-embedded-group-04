@@ -1,16 +1,20 @@
-import folium
 import base64
 from typing import List, Tuple
-ICON_PATH = "/Users/yehudanevo/PycharmProjects/embedded-embedded-group-04/icons"
+from utils.consts import ICON_PATH
+import folium
+
+
 # Convert image path to base64 icon
 def embedded_image_icon(img_path: str) -> str:
     encoded = base64.b64encode(open(img_path, 'rb').read()).decode()
     return f"data:image/png;base64,{encoded}"
 
+
 # Convert image path to base64 popup
 def embedded_image_popup(img_path: str) -> str:
     encoded = base64.b64encode(open(img_path, 'rb').read()).decode()
     return f'<img src="data:image/png;base64,{encoded}" alt="hazard" style="width:100%;">'
+
 
 # Create map with markers for hazards
 def generate_map(hazards_data: List[Tuple[str, Tuple[float, float], str]]) -> folium.Map:
@@ -22,7 +26,6 @@ def generate_map(hazards_data: List[Tuple[str, Tuple[float, float], str]]) -> fo
         popup = folium.Popup(popup_content, max_width=300)
         folium.Marker([lat, lon], tooltip=hazard_type, icon=custom_icon, popup=popup).add_to(base_map)
     return base_map
-
 
 # if __name__ == "__main__":
 #     hazards_data = [
